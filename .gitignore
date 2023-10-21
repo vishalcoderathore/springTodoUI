@@ -1,0 +1,67 @@
+# .gitignore
+
+# Dependencies
+/node_modules
+
+# Build output
+/build
+/dist
+
+# Misc
+.DS_Store
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE - Visual Studio Code
+.vscode/
+
+# TypeScript
+tsconfig.json
+tslint.json
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.log
+
+# Directory used by editors like VSCode
+.vscode/
+
+# Yarn
+yarn-error.log
+
+# dotenv environment variables file
+.env
+
+# macOS
+*.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# VS Code directories
+.vscode/
+
+# Windows
+*.exe
+*.dll
+*.sys
+*.msi
+*.ini
+*.lnk
