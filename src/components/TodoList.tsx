@@ -1,25 +1,24 @@
-// TodoList.tsx
-
 import TodoListItem from './TodoListItem';
 import React from 'react';
 
-interface Todo {
-  id: number;
-  title: string;
-  completed: boolean;
+interface TodoListProps {
+  todos: {
+    id: number;
+    title: string;
+    completed: boolean;
+  }[];
+  onDelete: (id: number) => void;
 }
 
-interface Props {
-  todos: Todo[];
-}
-
-const TodoList: React.FC<Props> = ({ todos }) => {
+const TodoList: React.FC<TodoListProps> = ({ todos, onDelete }) => {
   return (
-    <ul className="list-group">
+    <div>
       {todos.map(todo => (
-        <TodoListItem key={todo.id} todo={todo} />
+        <div key={todo.id} className="border-bottom pb-2 mb-2">
+          <TodoListItem todo={todo} onDelete={onDelete} />
+        </div>
       ))}
-    </ul>
+    </div>
   );
 };
 

@@ -26,20 +26,32 @@ const TodoContainer: React.FC = () => {
     }
   };
 
+  const deleteTodo = (id: number): void => {
+    const updatedTodos = todos.filter(todo => todo.id !== id);
+    setTodos(updatedTodos);
+  };
+
+  const handleFormSubmit = (e: React.FormEvent): void => {
+    e.preventDefault();
+    addTodo();
+  };
+
   return (
     <div>
-      {todos.length ? <TodoList todos={todos} /> : <p>No todos yet.</p>}
+      {todos.length ? <TodoList todos={todos} onDelete={deleteTodo} /> : <p>No todos yet.</p>}
       <div className="mt-3">
-        <input
-          type="text"
-          value={inputValue}
-          onChange={(e): void => setInputValue(e.target.value)}
-          placeholder="Enter a new todo"
-          className="form-control"
-        />
-        <button onClick={addTodo} className="btn btn-primary mt-2">
-          Add Todo
-        </button>
+        <form onSubmit={handleFormSubmit}>
+          <input
+            type="text"
+            value={inputValue}
+            onChange={(e): void => setInputValue(e.target.value)}
+            placeholder="Enter a new todo"
+            className="form-control"
+          />
+          <button type="submit" className="btn btn-success mt-2">
+            Add Todo
+          </button>
+        </form>
       </div>
     </div>
   );

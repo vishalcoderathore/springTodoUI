@@ -1,23 +1,26 @@
 // TodoListItem.tsx
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 
-interface Todo {
-  id: number;
-  title: string;
-  completed: boolean;
+interface TodoListItemProps {
+  todo: {
+    id: number;
+    title: string;
+    completed: boolean;
+  };
+  onDelete: (id: number) => void;
 }
 
-interface Props {
-  todo: Todo;
-}
-
-const TodoListItem: React.FC<Props> = ({ todo }) => {
+const TodoListItem: React.FC<TodoListItemProps> = ({ todo, onDelete }) => {
   return (
-    <li className="list-group-item">
-      {todo.title}
-      {/* You can add more functionalities like editing, marking as complete, etc. */}
-    </li>
+    <div className="d-flex justify-content-between align-items-center mb-2">
+      <span>{todo.title}</span>
+      <button onClick={(): void => onDelete(todo.id)} className="btn btn-danger btn-sm">
+        <FontAwesomeIcon icon={faTrash} />
+      </button>
+    </div>
   );
 };
 
