@@ -31,6 +31,11 @@ const TodoContainer: React.FC = () => {
     setTodos(updatedTodos);
   };
 
+  const toggleCompleted = (id: number): void => {
+    const updatedTodos = todos.map(todo => (todo.id === id ? { ...todo, completed: !todo.completed } : todo));
+    setTodos(updatedTodos);
+  };
+
   const handleFormSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
     addTodo();
@@ -38,7 +43,11 @@ const TodoContainer: React.FC = () => {
 
   return (
     <div>
-      {todos.length ? <TodoList todos={todos} onDelete={deleteTodo} /> : <p>No todos yet.</p>}
+      {todos.length ? (
+        <TodoList todos={todos} onDelete={deleteTodo} onToggleCompleted={toggleCompleted} />
+      ) : (
+        <p>No todos yet.</p>
+      )}
       <div className="mt-3">
         <form onSubmit={handleFormSubmit}>
           <input
