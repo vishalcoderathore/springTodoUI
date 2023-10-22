@@ -1,9 +1,9 @@
 import { useParams } from 'react-router-dom';
+import TodoContainer from './TodoContainer';
 import React from 'react';
 
 const Dashboard: React.FC = () => {
   const { username } = useParams();
-  console.log(username);
 
   return (
     <div className="container mt-5">
@@ -13,7 +13,9 @@ const Dashboard: React.FC = () => {
             <div className="card-header bg-primary text-white text-center">
               <h1>Welcome {username}</h1>
             </div>
-            <div className="card-body">{/* You can add more content here later */}</div>
+            <div className="card-body">
+              <TodoContainer />
+            </div>
           </div>
         </div>
       </div>
