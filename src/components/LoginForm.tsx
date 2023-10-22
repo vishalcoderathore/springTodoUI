@@ -1,6 +1,7 @@
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { FC, useState } from 'react';
+import Error from './Error';
 
 interface LoginFormProps {
   onLogin: (username: string, password: string) => boolean;
@@ -46,7 +47,7 @@ const LoginForm: FC<LoginFormProps> = ({ onLogin }) => {
             <div className="card-body">
               <h5 className="card-title text-center">Login</h5>
               {/* Display error message if it's present */}
-              {errorMessage && <div className="alert alert-danger mt-3">{errorMessage}</div>}
+              {errorMessage && <Error message={errorMessage} />}
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="input">Email address</label>

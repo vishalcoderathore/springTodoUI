@@ -2,6 +2,7 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Dashboard from './Dashboard';
 import LoginForm from './LoginForm';
+import NotFound from './NotFound';
 
 interface PrivateRouteProps {
   isLoggedIn: boolean;
@@ -41,6 +42,7 @@ const TodoApp: React.FC = () => {
       <Routes>
         <Route path="/" element={<LoginForm onLogin={handleLogin} />} />
         <Route path="/dashboard" element={<PrivateRoute isLoggedIn={isLoggedIn} />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );
