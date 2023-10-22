@@ -30,7 +30,7 @@ const TodoApp: React.FC = () => {
   const handleLogin = (username: string, password: string): boolean => {
     if (username === HARDCODED_USERNAME && password === HARDCODED_PASSWORD) {
       setIsLoggedIn(true);
-      navigate('/dashboard');
+      navigate(`/dashboard/${HARDCODED_USERNAME}`);
       return true; // login was successful
     } else {
       return false; // login failed
@@ -41,7 +41,7 @@ const TodoApp: React.FC = () => {
     <div className="App">
       <Routes>
         <Route path="/" element={<LoginForm onLogin={handleLogin} />} />
-        <Route path="/dashboard" element={<PrivateRoute isLoggedIn={isLoggedIn} />} />
+        <Route path="/dashboard/:username" element={<PrivateRoute isLoggedIn={isLoggedIn} />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
