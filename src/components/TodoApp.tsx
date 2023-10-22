@@ -1,8 +1,10 @@
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import LandingPage from './LandingPage';
 import Dashboard from './Dashboard';
 import LoginForm from './LoginForm';
 import NotFound from './NotFound';
+import Header from './Header';
 
 interface PrivateRouteProps {
   isLoggedIn: boolean;
@@ -37,10 +39,17 @@ const TodoApp: React.FC = () => {
     }
   };
 
+  const handleLogout = (): void => {
+    setIsLoggedIn(false);
+    navigate('/');
+  };
+
   return (
     <div className="App">
+      <Header isLoggedIn={isLoggedIn} onLogout={handleLogout} />
       <Routes>
-        <Route path="/" element={<LoginForm onLogin={handleLogin} />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginForm onLogin={handleLogin} />} />
         <Route path="/dashboard/:username" element={<PrivateRoute isLoggedIn={isLoggedIn} />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
