@@ -1,56 +1,40 @@
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { SecurityContext } from './SecurityContext';
+import PrivateRoute from './PrivateRoute';
 import LandingPage from './LandingPage';
-import Dashboard from './Dashboard';
 import LoginForm from './LoginForm';
+import { useContext } from 'react';
 import NotFound from './NotFound';
 import Header from './Header';
 
-interface PrivateRouteProps {
-  isLoggedIn: boolean;
-}
-
-const PrivateRoute: React.FC<PrivateRouteProps> = ({ isLoggedIn }) => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate('/'); // Redirect to login if not logged in
-    }
-  }, [isLoggedIn, navigate]);
-
-  return isLoggedIn ? <Dashboard /> : null;
-};
-
 const TodoApp: React.FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+  const security = useContext(SecurityContext);
 
-  const HARDCODED_USERNAME = 'admin';
-  const HARDCODED_PASSWORD = 'password';
+  if (!security) {
+    throw new Error('SecurityContext not provided!');
+  }
 
   const handleLogin = (username: string, password: string): boolean => {
-    if (username === HARDCODED_USERNAME && password === HARDCODED_PASSWORD) {
-      setIsLoggedIn(true);
-      navigate(`/dashboard/${HARDCODED_USERNAME}`);
-      return true; // login was successful
-    } else {
-      return false; // login failed
+    const success = security.login(username, password);
+    if (success) {
+      navigate(`/dashboard/${username}`);
     }
+    return success;
   };
 
   const handleLogout = (): void => {
-    setIsLoggedIn(false);
+    security.logout();
     navigate('/');
   };
 
   return (
     <div className="App">
-      <Header isLoggedIn={isLoggedIn} onLogout={handleLogout} />
+      <Header isLoggedIn={security.isLoggedIn} onLogout={handleLogout} />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginForm onLogin={handleLogin} />} />
-        <Route path="/dashboard/:username" element={<PrivateRoute isLoggedIn={isLoggedIn} />} />
+        <Route path="/dashboard/:username" element={<PrivateRoute />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

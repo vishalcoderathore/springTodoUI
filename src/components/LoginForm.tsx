@@ -7,35 +7,29 @@ interface LoginFormProps {
   onLogin: (username: string, password: string) => boolean;
 }
 
+const InputField: FC<{
+  type: string;
+  id: string;
+  placeholder: string;
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}> = ({ type, id, placeholder, value, onChange }) => (
+  <input type={type} className="form-control" id={id} placeholder={placeholder} value={value} onChange={onChange} />
+);
+
 const LoginForm: FC<LoginFormProps> = ({ onLogin }) => {
-  // State initialization
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // Handler to update email
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setEmail(e.target.value);
-  };
-
-  // Handler to update password
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setPassword(e.target.value);
-  };
-
-  // Toggle password visibility
-  const togglePasswordVisibility = (): void => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleSubmit = (e: React.FormEvent): void => {
+  const handleLoginAttempt = (e: React.FormEvent): void => {
     e.preventDefault();
-    const isSuccess = onLogin(email, password); // Capture the boolean returned from onLogin
-    if (!isSuccess) {
-      setErrorMessage('Invalid credentials. Please try again.'); // Set error message
+    const loginSuccess = onLogin(email, password);
+    if (!loginSuccess) {
+      setErrorMessage('Invalid credentials. Please try again.');
     } else {
-      setErrorMessage(null); // Clear error message
+      setErrorMessage(null);
     }
   };
 
@@ -46,36 +40,33 @@ const LoginForm: FC<LoginFormProps> = ({ onLogin }) => {
           <div className="card">
             <div className="card-body">
               <h5 className="card-title text-center">Login</h5>
-              {/* Display error message if it's present */}
               {errorMessage && <Error message={errorMessage} />}
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleLoginAttempt}>
                 <div className="form-group">
-                  <label htmlFor="input">Email address</label>
-                  <input
-                    type="input"
-                    className="form-control"
+                  <label htmlFor="email">Email address</label>
+                  <InputField
+                    type="text"
                     id="email"
                     placeholder="Enter email"
                     value={email}
-                    onChange={handleEmailChange}
+                    onChange={(e): void => setEmail(e.target.value)}
                   />
                 </div>
                 <div className="form-group">
                   <label htmlFor="password">Password</label>
                   <div className="input-group">
-                    <input
+                    <InputField
                       type={showPassword ? 'text' : 'password'}
-                      className="form-control"
                       id="password"
                       placeholder="Password"
                       value={password}
-                      onChange={handlePasswordChange}
+                      onChange={(e): void => setPassword(e.target.value)}
                     />
                     <div className="input-group-append">
                       <span className="input-group-text">
                         <FontAwesomeIcon
                           icon={showPassword ? faEyeSlash : faEye}
-                          onClick={togglePasswordVisibility}
+                          onClick={(): void => setShowPassword(!showPassword)}
                           style={{ cursor: 'pointer' }}
                           size="xl"
                         />
@@ -100,4 +91,5 @@ const LoginForm: FC<LoginFormProps> = ({ onLogin }) => {
     </div>
   );
 };
+
 export default LoginForm;
