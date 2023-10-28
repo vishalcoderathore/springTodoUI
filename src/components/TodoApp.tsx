@@ -15,8 +15,8 @@ const TodoApp: React.FC = () => {
     throw new Error('SecurityContext not provided!');
   }
 
-  const handleLogin = (username: string, password: string): boolean => {
-    const success = security.login(username, password);
+  const handleLogin = async (username: string, password: string): Promise<boolean> => {
+    const success = await security.login(username, password); // Wait for the Promise to resolve
     if (success) {
       navigate(`/dashboard/${username}`);
     }

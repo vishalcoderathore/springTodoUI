@@ -4,7 +4,7 @@ import React, { FC, useState } from 'react';
 import Error from './Error';
 
 interface LoginFormProps {
-  onLogin: (username: string, password: string) => boolean;
+  onLogin: (username: string, password: string) => Promise<boolean>;
 }
 
 const InputField: FC<{
@@ -23,14 +23,22 @@ const LoginForm: FC<LoginFormProps> = ({ onLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleLoginAttempt = (e: React.FormEvent): void => {
+  const handleLoginAttempt = async (e: React.FormEvent): Promise<void> => {
+    // Updated to async
     e.preventDefault();
-    const loginSuccess = onLogin(email, password);
+    const loginSuccess = await onLogin(email, password); // Using await to get the result
     if (!loginSuccess) {
       setErrorMessage('Invalid credentials. Please try again.');
     } else {
       setErrorMessage(null);
     }
+  };
+
+  const handleSubmit = (e: React.FormEvent): void => {
+    handleLoginAttempt(e).catch(error => {
+      console.error('Login failed:', error);
+      setErrorMessage('An error occurred. Please try again.');
+    });
   };
 
   return (
@@ -41,7 +49,7 @@ const LoginForm: FC<LoginFormProps> = ({ onLogin }) => {
             <div className="card-body">
               <h5 className="card-title text-center">Login</h5>
               {errorMessage && <Error message={errorMessage} />}
-              <form onSubmit={handleLoginAttempt}>
+              <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="email">Email address</label>
                   <InputField

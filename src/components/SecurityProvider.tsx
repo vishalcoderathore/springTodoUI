@@ -2,9 +2,6 @@
 import { SecurityContext } from './SecurityContext';
 import React, { useState } from 'react';
 
-const HARDCODED_USERNAME = 'admin';
-const HARDCODED_PASSWORD = 'password';
-
 interface SecurityProviderProps {
   children: React.ReactNode;
 }
@@ -12,10 +9,22 @@ interface SecurityProviderProps {
 export const SecurityProvider: React.FC<SecurityProviderProps> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const login = (username: string, password: string): boolean => {
-    if (username === HARDCODED_USERNAME && password === HARDCODED_PASSWORD) {
-      setIsLoggedIn(true);
-      return true;
+  const login = async (username: string, password: string): Promise<boolean> => {
+    try {
+      const response = await fetch('http://localhost:8080/api/auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (response.ok) {
+        setIsLoggedIn(true);
+        return true;
+      }
+    } catch (error) {
+      console.error('Login error:', error);
     }
     return false;
   };

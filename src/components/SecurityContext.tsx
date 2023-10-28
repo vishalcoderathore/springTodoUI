@@ -3,7 +3,7 @@ import { createContext } from 'react';
 
 interface SecurityContextType {
   isLoggedIn: boolean;
-  login: (username: string, password: string) => boolean;
+  login: (username: string, password: string) => Promise<boolean>;
   logout: () => void;
 }
 
