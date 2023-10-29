@@ -1,5 +1,6 @@
 // Security.tsx
 import { SecurityContext } from './SecurityContext';
+import { LOGIN_URL } from '../api/apiRoutes';
 import React, { useState } from 'react';
 
 interface SecurityProviderProps {
@@ -11,7 +12,7 @@ export const SecurityProvider: React.FC<SecurityProviderProps> = ({ children }) 
 
   const login = async (username: string, password: string): Promise<boolean> => {
     try {
-      const response = await fetch('http://localhost:8080/api/auth', {
+      const response = await fetch(LOGIN_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

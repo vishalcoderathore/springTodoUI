@@ -1,14 +1,11 @@
 import TodoListItem from './TodoListItem';
+import { Todo } from './TodoContainer';
 import React from 'react';
 
 interface TodoListProps {
-  todos: {
-    id: number;
-    title: string;
-    completed: boolean;
-  }[];
-  onDelete: (id: number) => void;
-  onToggleCompleted: (id: number) => void;
+  todos: Todo[];
+  onDelete: (id: number) => Promise<void>;
+  onToggleCompleted: (id: number) => Promise<void>;
 }
 
 const TodoList: React.FC<TodoListProps> = ({ todos, onDelete, onToggleCompleted }) => {
